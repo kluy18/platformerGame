@@ -27,24 +27,20 @@
             <kind>1</kind>
             <string>// Gravity
 var grounded;
-grounded = collision_rectangle(x - 16, y + 15, x + 16, y + 16, obj_Floor, false, true);
+grounded = collision_rectangle(x - 16, y + 14, x + 16, y + vspeed, obj_Floor, false, true);
 
 if grounded != noone {
     //Gravity
     vspeed = 0;
-    
-    //Friction
-    if (hspeed &gt; 0) {
-    hspeed -= .5;
-    }
-    if (hspeed &lt; 0) {
-    hspeed += .5;
-    }
 
 } else {
 
     vspeed += 1;
 
+}
+
+if point_distance( x, y - 16, x, obj_Floor.y) &gt; 0 &amp;&amp; point_distance( x, y, x, obj_Floor.y) &lt; 40 {
+y += 10;
 }
 
 // Movement Variables
@@ -57,29 +53,37 @@ key_down = keyboard_check(vk_down);
 
 if key_left = true
     {
-    hspeed -= 1.25
+    hspeed -= .75
 }
 
 if key_right = true
     {
-    hspeed += 1.25
+    hspeed += .75
 }
+
+    //Friction
+    if (hspeed &gt; 0) {
+    hspeed -= .3;
+    }
+    if (hspeed &lt; 0) {
+    hspeed += .3;
+    }
 
 // Max Speed
 
-if hspeed &gt; 5
+if hspeed &gt; 3
     {
-    hspeed = 5;
+    hspeed = 3;
 }
 
-if hspeed &lt; -5
+if hspeed &lt; -3
     {
-    hspeed = -5;
+    hspeed = -3;
 }
 
-if vspeed &gt; 5
+if vspeed &gt; 4
 {
-    vspeed = 5;
+    vspeed = 4;
 }
 
 </string>
