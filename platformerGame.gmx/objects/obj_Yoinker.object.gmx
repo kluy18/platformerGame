@@ -26,10 +26,19 @@
           <argument>
             <kind>1</kind>
             <string>hsp = 0;
+hsp_wjump = 10;
+
 vsp = 0
+vsp_wjump = -5;
+vsp_max_wall = 4;
+
 grv = 0.3;
+grv_wall = 0.1;
+
 walkspd = 4;
-onWall = false;
+
+onground = false;
+onwall = 0;
 </string>
           </argument>
         </arguments>
@@ -55,7 +64,7 @@ onWall = false;
             <string>//Get Player Input
 key_left = keyboard_check(vk_left);
 key_right = keyboard_check(vk_right);
-key_jump = keyboard_check_pressed(vk_up);
+key_jump = keyboard_check_pressed(vk_up) or keyboard_check_pressed(vk_space);
 var onWall;
 
 //Calculate Movement
@@ -70,26 +79,21 @@ if (place_meeting(x,y+1,obj_Floor)) and (key_jump)
     vsp = -7;    
 }
 
+//Wall Jump
+if (onwall != 0) &amp;&amp; (!onground) &amp;&amp; (key_jump)
+{
+    hsp = -onwall * hsp_wjump;
+    vsp = vsp_wjump
+    
+
+}
+
 //Horizontal Collision
 if (place_meeting(x+hsp,y,obj_Floor))
 {
     while (!place_meeting(x+sign(hsp),y,obj_Floor))
     {
         x = x + sign (hsp);
-    }
-        //Wall jumps
-    if (place_meeting(x+5,y,obj_Floor)) {
-        if (key_right) &amp;&amp; (key_jump) &amp;&amp; (vsp &gt; 0) {
-            vsp = -7;
-            hsp = -3;
-        }
-    }
-    //left
-    if (place_meeting(x-5,y,obj_Floor)) {
-        if (key_left) &amp;&amp; (key_jump) &amp;&amp; (vsp &gt; 0) {
-           vsp = -7;
-           hsp = 3;
-        }
     }
     hsp = 0;
 }
@@ -105,6 +109,10 @@ if (place_meeting(x,y+vsp,obj_Floor))
 }
 
 y = y + vsp;
+
+//Calculate current status
+onwall = place_meeting(x+1,y,obj_Floor) - place_meeting(x-1,y,obj_Floor)
+onground = place_meeting(x,y+1,obj_Floor)
 </string>
           </argument>
         </arguments>
